@@ -46,7 +46,7 @@ class Grid
     }
 
     OPERATORS.default_proc = proc do |hash, key|
-        [:mem_set, key]
+        [:mem_set, key.ord]
     end
 
     def initialize size
@@ -125,7 +125,7 @@ class Grid
 
     def to_s
         @grid.map{|line|
-            ' '*(2*@size-1 - line.size) + line.map{|c,d| (d ? '`' : ' ') + (OPERATORS.invert[c]||c[1])}*''
+            ' '*(2*@size-1 - line.size) + line.map{|c,d| (d ? '`' : ' ') + (OPERATORS.invert[c]||c[1].chr)}*''
         }*$/
     end
 end

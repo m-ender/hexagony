@@ -64,6 +64,7 @@ class Hexagony
             end
             process cmd
             p dir if @debug_level > 1
+            p @memory if @debug_level > 1
             @ips[@active_ip][0] += dir.vec
             handle_edges
             @active_ip = @new_ip
@@ -74,176 +75,122 @@ class Hexagony
     private
 
     def process cmd
-        # opcode, param = *cmd
+        opcode, param = *cmd
 
-        # case opcode
-        # # Arithmetic
-        # when :push_zero
-        #     push_main 0
-        # when :digit
-        #     val = pop_main
-        #     if val < 0
-        #         push_main(val*10 - param)
-        #     else
-        #         push_main(val*10 + param)
-        #     end
-        # when :inc
-        #     push_main(pop_main+1)
-        # when :dec
-        #     push_main(pop_main-1)
-        # when :add
-        #     push_main(pop_main+pop_main)
-        # when :sub
-        #     a = pop_main
-        #     b = pop_main
-        #     push_main(b-a)
-        # when :mul
-        #     push_main(pop_main*pop_main)
-        # when :div
-        #     a = pop_main
-        #     b = pop_main
-        #     push_main(b/a)
-        # when :mod
-        #     a = pop_main
-        #     b = pop_main
-        #     push_main(b%a)
-        # when :neg
-        #     push_main(-pop_main)
-        # when :bit_and
-        #     push_main(pop_main&pop_main)
-        # when :bit_or
-        #     push_main(pop_main|pop_main)
-        # when :bit_xor
-        #     push_main(pop_main^pop_main)
-        # when :bit_not
-        #     push_main(~pop_main)
+        case opcode
 
-        # # Stack manipulation
-        # when :dup
-        #     push_main(peek_main)
-        # when :pop
-        #     pop_main
-        # when :move_to_main
-        #     push_main(pop_aux)
-        # when :move_to_aux
-        #     push_aux(pop_main)
-        # when :swap_tops
-        #     a = pop_aux
-        #     m = pop_main
-        #     push_aux m
-        #     push_main a
-        # when :depth
-        #     push_main(@main.size)
+        # Arithmetic
+        when :digit
+            val = @memory.get
+            if val < 0
+                @memory.set(val*10 - param)
+            else
+                @memory.set(val*10 + param)
+            end
+        when :inc
+            @memory.set(@memory.get+1)
+        when :dec
+            @memory.set(@memory.get-1)
+        when :add
+            @memory.set(@memory.get_left + @memory.get_right)
+        when :sub
+            @memory.set(@memory.get_left - @memory.get_right)
+        when :mul
+            @memory.set(@memory.get_left * @memory.get_right)
+        when :div
+            @memory.set(@memory.get_left / @memory.get_right)
+        when :mod
+            @memory.set(@memory.get_left % @memory.get_right)
+        when :neg
+            @memory.set(-@memory.get)
 
-        # # I/O
-        # when :input_char
-        #     byte = read_byte
-        #     push_main(byte ? byte.ord : -1)
-        # when :output_char
-        #     $> << pop_main.chr
-        # when :input_int
-        #     val = 0
-        #     sign = 1
-        #     loop do
-        #         byte = read_byte
-        #         case byte
-        #         when '+'
-        #             sign = 1
-        #         when '-'
-        #             sign = -1
-        #         when '0'..'9', nil
-        #             @next_byte = byte
-        #         else
-        #             next
-        #         end
-        #         break
-        #     end
+        # Memory manipulation
+        when :mp_left
+            @memory.move_left
+        when :mp_right
+            @memory.move_right
+        when :mp_reverse
+            @memory.reverse
+        when :mp_branch
+            if @memory.get > 0
+                @memory.move_right
+            else
+                @memory.move_left
+            end
+        when :mem_cpy
+            if @memory.get > 0
+                @memory.set(@memory.get_right)
+            else
+                @memory.set(@memory.get_left)
+            end
+        when :mem_set
+            @memory.set(param)
 
-        #     loop do
-        #         byte = read_byte
-        #         if byte && byte[/\d/]
-        #             val = val*10 + byte.to_i
-        #         else
-        #             @next_byte = byte
-        #             break
-        #         end
-        #     end
 
-        #     push_main(sign*val)
-        # when :output_int
-        #     $> << pop_main
-        # when :output_newline
-        #     puts
+        # I/O
+        when :input_char
+            byte = read_byte
+            @memory.set(byte ? byte.ord : -1)
+        when :output_char
+            $> << @memory.get.chr
+        when :input_int
+            val = 0
+            sign = 1
+            loop do
+                byte = read_byte
+                case byte
+                when '+'
+                    sign = 1
+                when '-'
+                    sign = -1
+                when '0'..'9', nil
+                    @next_byte = byte
+                else
+                    next
+                end
+                break
+            end
 
-        # # Grid manipulation
-        # when :rotate_west
-        #     offset = pop_main
-        #     @grid[(y+offset) % @height].rotate!(1)
-            
-        #     if offset == 0
-        #         @ip += West.new.vec
-        #         if x < 0
-        #             @ip.x = @width-1
-        #         end
-        #     end
+            loop do
+                byte = read_byte
+                if byte && byte[/\d/]
+                    val = val*10 + byte.to_i
+                else
+                    @next_byte = byte
+                    break
+                end
+            end
 
-        #     puts @grid.map{|l| l.map{|c| OPERATORS.invert[c]}*''} if @debug_level > 1
-        # when :rotate_east
-        #     offset = pop_main
-        #     @grid[(y+offset) % @height].rotate!(-1)
-            
-        #     if offset == 0
-        #         @ip += East.new.vec
-        #         if x >= @width
-        #             @ip.x = 0
-        #         end
-        #     end
+            @memory.set(sign*val)
+        when :output_int
+            $> << @memory.get
 
-        #     puts @grid.map{|l| l.map{|c| OPERATORS.invert[c]}*''} if @debug_level > 1
-        # when :rotate_north
-        #     offset = pop_main
-        #     grid = @grid.transpose
-        #     grid[(x+offset) % @width].rotate!(1)
-        #     @grid = grid.transpose
-            
-        #     if offset == 0
-        #         @ip += North.new.vec
-        #         if y < 0
-        #             @ip.y = @height-1
-        #         end
-        #     end
+        # Control flow
+        when :mirror_hori
+            @ips[@active_ip][1] = dir.reflect_hori
+        when :mirror_vert
+            @ips[@active_ip][1] = dir.reflect_vert
+        when :mirror_diag_up
+            @ips[@active_ip][1] = dir.reflect_diag_up
+        when :mirror_diag_down
+            @ips[@active_ip][1] = dir.reflect_diag_down
+        when :branch_left
+            @ips[@active_ip][1] = dir.reflect_branch_left(@memory.get > 0)
+        when :branch_right
+            @ips[@active_ip][1] = dir.reflect_branch_right(@memory.get > 0)
+        when :next_ip
+            @new_ip = (@active_ip+1) % 6
+        when :prev_ip
+            @new_ip = (@active_ip-1) % 6
+        when :choose_ip
+            @new_ip = @memory.get % 6
 
-        #     puts @grid.map{|l| l.map{|c| OPERATORS.invert[c]}*''} if @debug_level > 1
-        # when :rotate_south
-        #     offset = pop_main
-        #     grid = @grid.transpose
-        #     grid[(x+offset) % @width].rotate!(-1)
-        #     @grid = grid.transpose
-            
-        #     if offset == 0
-        #         @ip += South.new.vec
-        #         if y >= @height
-        #             @ip.y = 0
-        #         end
-        #     end
-
-        #     puts @grid.map{|l| l.map{|c| OPERATORS.invert[c]}*''} if @debug_level > 1
-
-        # # Others
-        # when :terminate
-        #     raise '[BUG] Received :terminate. This shouldn\'t happen.'
-        # when :nop
-        #     # Nop(e)
-        # when :debug
-        #     if @debug_level > 0
-        #         puts
-        #         puts "Grid:"
-        #         puts @grid.map{|l| l.map{|c| OPERATORS.invert[c]}*''}
-        #         puts "Position: #{@ip.pretty}"
-        #         puts "Direction: #{@dir.class.name}"
-        #         puts "Main [ #{@main*' '}  |  #{@aux.reverse*' '} ] Auxiliary"
-        #     end
-        # end
+        # Others
+        when :terminate
+            raise '[BUG] Received :terminate. This shouldn\'t happen.'
+        when :nop
+            # Nop(e)
+        end
     end
 
     def handle_edges
