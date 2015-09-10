@@ -15,7 +15,7 @@ class Grid
         #'+'  ,
         #','  ,
         #'-'  ,
-        #'.'  ,
+        '.' => :nop,
         #'/'  ,
         #'0'  ,
         #':'  ,
@@ -52,19 +52,63 @@ class Grid
     def initialize size
         @size = size
         @grid = Array.new(2*@size-1) {|j|
-            Array.new(2*@size-1 - (@size-1 - j).abs)
+            [:nop]*(2*@size-1 - (@size-1 - j).abs)
         }
-        @grid.map{|l|p l}
     end
 
-    def cell coords
+    def self.from_string(string)
+        src = string.gsub(/\s/,'')
+
+        # Find size of hexagon
+        size = 1
+        size += 1 while 3*size*(size+1) - 6*size + 1 < src.size
+
+        src = src.ljust(3*size*(size+1) - 6*size + 1, '.')
+
+        grid = Grid.new(size)
+
+        grid.fill!(src.chars.map{|c| OPERATORS[c]})
+
+        grid
+    end
+
+    def fill! data
+        i = -1
+        @grid.map! { |line|
+            line.map! {
+                data[i+=1]
+            }
+        }
+    end
+
+    def get coords
+        i, j = axial_to_index coords
+
+        if i && j
+            @grid[i][j]
+        else
+            nil
+        end
+    end
+
+    def set coords, value
+        i, j = axial_to_index coords
+
+        @grid[i][j] = value if i && j
+    end
+
+    def axial_to_index coords
         x = coords.q
         z = coords.r
         y = -x-z
         return nil if [x.abs, y.abs, z.abs].max >= @size
-        i = x + @size-1
-        j = z + [i, @size-1].min
 
-        @grid[i][j]
+        return [x + @size-1, z + [i, @size-1].min]
+    end
+
+    def to_s
+        @grid.map{|line|
+            ' '*(2*@size-1 - line.size) + line.map{|c| OPERATORS.invert[c]}*' '
+        }*$/
     end
 end

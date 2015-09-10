@@ -15,7 +15,9 @@ class Hexagony
     def initialize(src, debug_level=false)
         @debug_level = debug_level
 
-        @grid = Grid.new(10)
+        @grid = Grid.from_string(src)
+
+        p @grid
 
         @tick = 0
     end
