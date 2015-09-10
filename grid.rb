@@ -1,6 +1,8 @@
 require_relative 'coords'
 
 class Grid
+    attr_reader :size
+
     OPERATORS = {
         #'!'  ,
         #'"'  ,
@@ -59,11 +61,12 @@ class Grid
     def self.from_string(string)
         src = string.gsub(/\s/,'')
 
-        # Find size of hexagon
+        # Find size of the grid as the smallest regular hexagon which
+        # is not smaller than the source code.
         size = 1
-        size += 1 while 3*size*(size+1) - 6*size + 1 < src.size
+        size += 1 while 3*size*(size-1) + 1 < src.size
 
-        src = src.ljust(3*size*(size+1) - 6*size + 1, '.')
+        src = src.ljust(3*size*(size-1) + 1, '.')
 
         grid = Grid.new(size)
 

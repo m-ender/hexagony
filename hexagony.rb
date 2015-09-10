@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require_relative 'grid'
+require_relative 'memory'
 require_relative 'coords'
 require_relative 'direction'
 
@@ -17,7 +18,7 @@ class Hexagony
 
         @grid = Grid.from_string(src)
 
-        p @grid
+        @memory = Memory.new
 
         @tick = 0
     end
