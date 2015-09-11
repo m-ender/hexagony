@@ -266,6 +266,10 @@ when "-d"
     debug_level = 1
 when "-D"
     debug_level = 2
+when "-g"
+    size = ARGV[1].to_i
+    puts Grid.new(size)
+    exit
 else
     debug_level = 0
 end

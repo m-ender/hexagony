@@ -52,7 +52,7 @@ class Grid
     def initialize size
         @size = size
         @grid = Array.new(2*@size-1) {|j|
-            [[:nop]]*(2*@size-1 - (@size-1 - j).abs)
+            [[[:nop]]]*(2*@size-1 - (@size-1 - j).abs)
         }
     end
 
