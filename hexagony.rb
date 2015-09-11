@@ -198,10 +198,54 @@ class Hexagony
         z = r
         y = -x-z
 
-        if [x.abs, y.abs, z.abs].max >= @grid.size
-            p [x, y, z]
-            p dir
-            raise 'NotYetImplemented, duh'
+        abs = [x.abs, y.abs, z.abs]
+
+        if @grid.size == 1
+            @ips[@active_ip][0] = PointAxial.new(0,0)
+        elsif abs.max >= @grid.size
+            # First, determine pivot: if there's only one value at @size, that's the pivot.
+            # If there's two, if @memory.get > 0, the pivot is the first coordinate in a
+            # cyclically adjacent pair. Otherwise it's the second one.
+            # Now undo the last step.
+            # Finally, to do the wrapping, negate all three values and swap the non-pivot values.
+            max_indices = abs.each_index.select{|i| abs[i] >= @grid.size}
+
+            case max_indices.size
+            when 1
+                pivot = max_indices[0]
+            when 2
+                a, b = max_indices
+                # We want the first index, if we consider the two as a cyclically adjacent pair.
+                # i.e.
+                # a b  pivot
+                # 0 1  0
+                # 1 2  1
+                # 2 0  2
+                # 1 0  0
+                # 2 1  1
+                # 0 2  2
+                pivot = (a-b)%3 == 1 ? b : a
+                # Pick the other one if current cell is non-positive
+                pivot = (pivot+1)%3 if @memory.get <= 0
+            end # Can't be 3
+
+            i, j = [0, 1, 2].select{|k| k != pivot}
+
+            @ips[@active_ip][0] -= dir.vec
+
+            x = q
+            z = r
+            y = -x-z
+
+            wrapped = [x,y,z].map{|i| -i}
+            wrapped[i], wrapped[j] = wrapped[j], wrapped[i]
+
+            x, _, z = wrapped
+
+            @ips[@active_ip][0].q = x
+            @ips[@active_ip][0].r = z
+
+            p @ips[@active_ip] if @debug_level > 1
         end
     end
 

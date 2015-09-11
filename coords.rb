@@ -21,6 +21,12 @@ class PointAxial
         end
     end
 
+    def -(other)
+        if other.is_a?(PointAxial)
+            return PointAxial.new(@q-other.q, @r-other.r)
+        end
+    end
+
     def coerce(other)
         return self, other
     end
@@ -55,6 +61,12 @@ class PointCube
     def +(other)
         if other.is_a?(PointCube)
             return PointCube.new(@x+other.x, @y+other.y, @z+other.z)
+        end
+    end
+
+    def -(other)
+        if other.is_a?(PointCube)
+            return PointCube.new(@x-other.x, @y-other.y, @z-other.z)
         end
     end
 
