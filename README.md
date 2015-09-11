@@ -1,8 +1,8 @@
 # Hexagony
 
-Hexagony is (to the best of the author's knowledge) the first two-dimensional [esoteric programming language](https://esolangs.org/wiki/Main_Page) on a hexagonal grid. Furthermore, the memory layout *also* resembles a (separate) hexagonal grid.
+Hexagony is (to the best of the author's knowledge) the first two-dimensional [esoteric programming language](https://esolangs.org/wiki/Main_Page) on a hexagonal grid. Furthermore, the memory layout *also* resembles a (separate) hexagonal grid. The name is a portmanteau of "hexagon" and "agony", because I expect programming in it to be quite a pain.
 
-Labyrinth is Turing-complete as any Brainfuck program can be translated to Hexagony with some effort.
+Hexagony is Turing-complete as any Brainfuck program can be translated to Hexagony with some effort.
 
 ## Overview
 
@@ -61,7 +61,13 @@ would instead be the short form of
      
 ### Control flow
 
-Hexagony has 6 instruction pointers (IPs). They start out in the corners of the source code, pointing along the edge in the clockwise direction. Only one IP is active at any given time, initially the one in the top left corner (moving to the right). There are commands which let you switch to another IP, in which case the current IP will make another move (but not execute the next command), and then the new IP will start by executing its current command before making its first move.
+Hexagony has 6 instruction pointers (IPs). They start out in the corners of the source code, pointing along the edge in the clockwise direction. Only one IP is active at any given time, initially the one in the top left corner (moving to the right). There are commands which let you switch to another IP, in which case the current IP will make another move (but not execute the next command), and then the new IP will start by executing its current command before making its first move. Each IP has an index from `0` to `5`:
+
+        0 . 1
+       . . . .
+      5 . . . 2
+       . . . .
+        4 . 3
 
 The direction of an IP can be changed via several commands which resemble mirrors and branches.
 
@@ -111,5 +117,65 @@ The following is a complete reference of all commands available in Hexagony.
 
 - `` ` `` is stripped from the source code together with all whitespace. However, it sets a debug flag on the *following* command. When the interpreter is invoked with the `-d` flag, it will print useful debug information whenever a marked command is executed. E.g. in the following code, the debug flag is set on the `?` command:
 
-         . . . .
+          . . .
+         . .`? .
         . . . . . 
+         . . . .
+          . . .
+- **Letters:** All 52 letter characters are reserved and will set the current memory cell to their ASCII code.
+- `.` is a no-op: the IP will simply pass through.
+- `@` terminates the program.
+
+### Arithmetic
+
+- `0-9` will multiply the current memory edge by 10 and add the corresponding digit. If the current edge has a negative value, the digit is subtracted instead of added. This allows you to write decimal number into the source code despite each digit being processed separately.
+- `)` increments the current memory edge.
+- `(` decrements the current memory edge.
+- `+` sets the current memory edge to the sum of the left and right neighbours.
+- `-` sets the current memory edge to the difference of the left and right neighbours (`left - right`).
+- `*` sets the current memory edge to the product of the left and right neighbours.
+- `/` sets the current memory edge to the quotient of the left and right neighbours (`left / right`, rounded towards negative infinity).
+- `%` sets the current memory edge to the modulo of the left and right neighbours (`left % right`, the sign of the result is the same as the sign of `right`).
+- `~` multiplies the current memory edge by `-1`.
+
+### I/O
+
+- `,` read a single character from STDIN and set the current memory edge to its byte value. Returns `-1` once EOF is reached.
+- `?` read and discard from STDIN until a digit, a `-` or a `+` is found. Then read as many characters as possible to form a valid (signed) decimal integer and set the current memory edge to its value. Returns `0` once EOF is reached.
+- `;` interpret the current memory edge as a character code and write the corresponding character to STDOUT.
+- `!` write decimal representation of the current memory edge to STDOUT.
+
+### Control flow
+
+- `_`, `|`, `/`, `\` are mirrors. They reflect the IP in the direction you'd expect. For definiteness, the following table shows how they deflect an incoming IP. The top row corresponds to the current direction of the IP, the leading column to the mirror, and the table cell shows the outgoing direction of the IP:
+ 
+        cmd   E SE SW  W NW NE
+
+         /   NW  W SW SE  E NE
+         \   SW SE  E NE NW  W
+         _    E NE NW  W SW SE
+         |    W SW SE  E NE NW
+ 
+- `<` and `>` act as either mirrors or branches, depending on the incoming direction:
+
+        cmd   E SE SW  W NW NE
+
+         <   ?? NW  W  E  W SW 
+         >    W  E NE ?? SE  E
+         
+  The cells indicated as `??` are where they act as branches. In these cases, if the current memory edge is positive, the IP takes a 60 degree turn to the right (e.g. `<` turns `E` into `SE`). If the current memory edge is zero or negative, the IP takes a 60 degree turn to the left (e.g. `<` turns `E` into `NE`).
+- `[` switches to the previous IP (wrapping around from `0` to `5`).
+- `]` switches to the next IP (wrapping around from `5` to `0`).
+- `#` takes the current memory edge modulo `6` and switches to the IP with that index.
+
+## Memory manipulation
+
+- `{` moves the MP to the left neighbour.
+- `}` moves the MP to the right neighbour.
+- `=` reverses the direction of the MP (this doesn't affect the current memory edge, but changes which edges are considered the left and right neighbour).
+- `^` moves the MP to the left neighbour if the current edge is zero or negative and to the right neighbour if it's positive.
+- `&` copies the value of left neighbour into the current edge if the current edge is zero or negative and the value of the right neighbour if it's positive.
+
+## Unassigned commands
+
+The commands `"`, `$` and `'` are still unassigned. Currently, they act like letters, setting the current memory edge to their character code. However, programs should not rely on this behaviour because these characters may still be turned into new commands.
