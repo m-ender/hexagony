@@ -30,9 +30,9 @@ class Grid
         #'A'  ,
         # ... These will not be assigned and will set their ASCII value to the current memory cell.
         #'Z'  ,
-        '[' => [:next_ip],
+        '[' => [:prev_ip],
         '\\' => [:mirror_diag_down],
-        ']' => [:prev_ip],
+        ']' => [:next_ip],
         '^' => [:mp_branch],
         '_' => [:mirror_hori],
         #'`'  , This will not be assigned as it's used for debug annotations. 
