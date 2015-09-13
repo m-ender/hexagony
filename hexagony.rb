@@ -15,7 +15,7 @@ class Hexagony
 
     def initialize(src, debug_level=false)
         @debug_level = debug_level
-
+        @debug_tick = false
         @grid = Grid.from_string(src)
         size = @grid.size
 
@@ -55,16 +55,18 @@ class Hexagony
             return
         end
         loop do
-            puts "\nTick #{@tick}:" if @debug_level > 1
-            p @ips[@active_ip] if @debug_level > 1
             cmd, dbg = @grid.get coords
-            p cmd if @debug_level > 1
+            @debug_tick = @debug_level > 1 || (@debug_level > 0 && dbg)
+            puts "\nTick #{@tick}:" if @debug_tick
+            p @ips[@active_ip] if @debug_tick
+            p cmd if @debug_tick
             if cmd[0] == :terminate
+                p @memory if @debug_tick
                 break
             end
             process cmd
-            p dir if @debug_level > 1
-            p @memory if @debug_level > 1
+            p dir if @debug_tick
+            p @memory if @debug_tick
             @ips[@active_ip][0] += dir.vec
             handle_edges
             @active_ip = @new_ip
@@ -110,6 +112,14 @@ class Hexagony
         when :mp_right
             @memory.move_right
         when :mp_reverse
+            @memory.reverse
+        when :mp_rev_left
+            @memory.reverse
+            @memory.move_right
+            @memory.reverse
+        when :mp_rev_right
+            @memory.reverse
+            @memory.move_left
             @memory.reverse
         when :mp_branch
             if @memory.get > 0
@@ -245,7 +255,7 @@ class Hexagony
             @ips[@active_ip][0].q = x
             @ips[@active_ip][0].r = z
 
-            p @ips[@active_ip] if @debug_level > 1
+            p @ips[@active_ip] if @debug_tick
         end
     end
 

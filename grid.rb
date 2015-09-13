@@ -5,12 +5,12 @@ class Grid
 
     OPERATORS = {
         '!' => [:output_int],
-        #'"'  ,
+        '"' => [:mp_rev_left],
         '#' => [:choose_ip],
         #'$'  ,
         '%' => [:mod],
         '&' => [:mem_cpy],
-        #'\'' ,
+        '\'' => [:mp_rev_right],
         '(' => [:dec],
         ')' => [:inc],
         '*' => [:mul],
@@ -66,7 +66,7 @@ class Grid
         size = 1
         size += 1 while 3*size*(size-1) + 1 < src.size
 
-        src = src.ljust(3*size*(size-1) + 1, '.')
+        src_dbg += '.'*(3*size*(size-1) + 1 - src.size)
 
         grid = Grid.new(size)
 

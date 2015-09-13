@@ -172,10 +172,12 @@ The following is a complete reference of all commands available in Hexagony.
 
 - `{` moves the MP to the left neighbour.
 - `}` moves the MP to the right neighbour.
+- `"` moves the MP backwards to the left. This is equivalent to `=}=`.
+- `'` moves the MP backwards to the right. This is equivalent to `={=`.
 - `=` reverses the direction of the MP (this doesn't affect the current memory edge, but changes which edges are considered the left and right neighbour).
 - `^` moves the MP to the left neighbour if the current edge is zero or negative and to the right neighbour if it's positive.
 - `&` copies the value of left neighbour into the current edge if the current edge is zero or negative and the value of the right neighbour if it's positive.
 
 ## Unassigned commands
 
-The commands `"`, `$` and `'` are still unassigned. Currently, they act like letters, setting the current memory edge to their character code. However, programs should not rely on this behaviour because these characters may still be turned into new commands.
+The command `$` is still unassigned. Currently, it acts like a letter, setting the current memory edge to its character code. However, programs should not rely on this behaviour because I may still turn `$` into a new command.
