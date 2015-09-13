@@ -134,7 +134,7 @@ The following is a complete reference of all commands available in Hexagony.
 - `+` sets the current memory edge to the sum of the left and right neighbours.
 - `-` sets the current memory edge to the difference of the left and right neighbours (`left - right`).
 - `*` sets the current memory edge to the product of the left and right neighbours.
-- `/` sets the current memory edge to the quotient of the left and right neighbours (`left / right`, rounded towards negative infinity).
+- `:` sets the current memory edge to the quotient of the left and right neighbours (`left / right`, rounded towards negative infinity).
 - `%` sets the current memory edge to the modulo of the left and right neighbours (`left % right`, the sign of the result is the same as the sign of `right`).
 - `~` multiplies the current memory edge by `-1`.
 
