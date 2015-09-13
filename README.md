@@ -168,7 +168,7 @@ The following is a complete reference of all commands available in Hexagony.
 - `]` switches to the next IP (wrapping around from `5` to `0`).
 - `#` takes the current memory edge modulo `6` and switches to the IP with that index.
 
-## Memory manipulation
+### Memory manipulation
 
 - `{` moves the MP to the left neighbour.
 - `}` moves the MP to the right neighbour.
@@ -178,6 +178,12 @@ The following is a complete reference of all commands available in Hexagony.
 - `^` moves the MP to the left neighbour if the current edge is zero or negative and to the right neighbour if it's positive.
 - `&` copies the value of left neighbour into the current edge if the current edge is zero or negative and the value of the right neighbour if it's positive.
 
-## Unassigned commands
+### Unassigned commands
 
 The command `$` is still unassigned. Currently, it acts like a letter, setting the current memory edge to its character code. However, programs should not rely on this behaviour because I may still turn `$` into a new command.
+
+## Interpreter features
+
+The interpreter has a verbose debug mode (like an additional debug level beyond activating `'` commands) which can be switched on with the command-line flag `-D`. If this flag is set, the interpreter will print detailed diagnostic information after every tick of the program.
+
+It can also be invoked with `-g N` where `N` is a positive integer, in which case it will not run any code but instead print an "empty" source file (i.e. filled with `.`) of side-length `N`. This is quite convenient for getting started when writing a larger program.
