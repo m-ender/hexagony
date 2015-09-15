@@ -184,6 +184,27 @@ The command `$` is still unassigned. Currently, it acts like a letter, setting t
 
 ## Interpreter features
 
-The interpreter has a verbose debug mode (like an additional debug level beyond activating `'` commands) which can be switched on with the command-line flag `-D`. If this flag is set, the interpreter will print detailed diagnostic information after every tick of the program.
+To run a program, invoke the interpreter with the source code's file name as a command-line argument, e.g.
 
-It can also be invoked with `-g N` where `N` is a positive integer, in which case it will not run any code but instead print an "empty" source file (i.e. filled with `.`) of side-length `N`. This is quite convenient for getting started when writing a larger program.
+    $ ruby ./hexagony.rb ./examples/hw.hxg
+
+The `-d` flag to activate `` ` `` annotations can be added in front of the source code, e.g.
+
+    $ ruby ./hexagony.rb -d ./examples/hw.hxg
+
+The interpreter also has a verbose debug mode (like an additional debug level beyond activating `` ` `` annotations) which can be switched on with the command-line flag `-D`. If this flag is set, the interpreter will print detailed diagnostic information after every tick of the program.
+
+It can also be invoked with `-g N` where `N` is a positive integer, in which case it will not run any code but instead print an "empty" source file (i.e. filled with `.`) of side-length `N`, e.g.
+
+    $ ruby ./hexagony.rb -g 5
+         . . . . .
+        . . . . . .
+       . . . . . . .
+      . . . . . . . .
+     . . . . . . . . .
+      . . . . . . . .
+       . . . . . . .
+        . . . . . .
+         . . . . .
+
+This is quite convenient for getting started when writing a larger program.
