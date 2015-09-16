@@ -7,7 +7,7 @@ class Grid
         '!' => [:output_int],
         '"' => [:mp_rev_left],
         '#' => [:choose_ip],
-        #'$'  ,
+        '$' => [:jump],
         '%' => [:mod],
         '&' => [:mem_cpy],
         '\'' => [:mp_rev_right],

@@ -176,6 +176,9 @@ class Hexagony
             $> << @memory.get
 
         # Control flow
+        when :jump
+            @ips[@active_ip][0] += dir.vec
+            handle_edges
         when :mirror_hori
             @ips[@active_ip][1] = dir.reflect_hori
         when :mirror_vert

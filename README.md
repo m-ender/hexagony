@@ -147,6 +147,7 @@ The following is a complete reference of all commands available in Hexagony.
 
 ### Control flow
 
+- `$` is a jump. When executed, the IP completely ignores the next command in its current direction. This is like Befunge's `#`.
 - `_`, `|`, `/`, `\` are mirrors. They reflect the IP in the direction you'd expect. For definiteness, the following table shows how they deflect an incoming IP. The top row corresponds to the current direction of the IP, the leading column to the mirror, and the table cell shows the outgoing direction of the IP:
  
         cmd   E SE SW  W NW NE
