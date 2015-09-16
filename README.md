@@ -1,6 +1,6 @@
 # Hexagony
 
-Hexagony is (to the best of the author's knowledge) the first two-dimensional [esoteric programming language](https://esolangs.org/wiki/Main_Page) on a hexagonal grid. Furthermore, the memory layout *also* resembles a (separate) hexagonal grid. The name is a portmanteau of "hexagon" and "agony", because I expect programming in it to be quite a pain.
+Hexagony is (to the best of the author's knowledge) the first two-dimensional [esoteric programming language](https://esolangs.org/wiki/Main_Page) on a hexagonal grid. Furthermore, the memory layout *also* resembles a (separate) hexagonal grid. The name is a portmanteau of "hexagon" and "agony", because I expect programming in it to be quite painful.
 
 Hexagony is Turing-complete as any Brainfuck program can be translated to Hexagony with some effort.
 
@@ -178,10 +178,6 @@ The following is a complete reference of all commands available in Hexagony.
 - `=` reverses the direction of the MP (this doesn't affect the current memory edge, but changes which edges are considered the left and right neighbour).
 - `^` moves the MP to the left neighbour if the current edge is zero or negative and to the right neighbour if it's positive.
 - `&` copies the value of left neighbour into the current edge if the current edge is zero or negative and the value of the right neighbour if it's positive.
-
-### Unassigned commands
-
-The command `$` is still unassigned. Currently, it acts like a letter, setting the current memory edge to its character code. However, programs should not rely on this behaviour because I may still turn `$` into a new command.
 
 ## Interpreter features
 
