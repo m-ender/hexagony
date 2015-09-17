@@ -16,6 +16,8 @@ class NorthEast
 
     def ==(other) other.is_a?(NorthEast) end
     def coerce(other) return self, other end
+
+    def to_s() "North East" end
 end
 
 class NorthWest
@@ -34,6 +36,8 @@ class NorthWest
 
     def ==(other) other.is_a?(NorthWest) end
     def coerce(other) return self, other end
+
+    def to_s() "North West" end
 end
 
 class West
@@ -52,6 +56,8 @@ class West
 
     def ==(other) other.is_a?(West) end
     def coerce(other) return self, other end
+
+    def to_s() "West" end
 end
 
 class SouthWest
@@ -70,6 +76,8 @@ class SouthWest
 
     def ==(other) other.is_a?(SouthWest) end
     def coerce(other) return self, other end
+
+    def to_s() "South West" end
 end
 
 class SouthEast
@@ -88,6 +96,8 @@ class SouthEast
 
     def ==(other) other.is_a?(SouthEast) end
     def coerce(other) return self, other end
+
+    def to_s() "South East" end
 end
 
 class East
@@ -106,4 +116,6 @@ class East
 
     def ==(other) other.is_a?(East) end
     def coerce(other) return self, other end
+
+    def to_s() "East" end
 end

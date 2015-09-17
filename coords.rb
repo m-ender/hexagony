@@ -32,10 +32,6 @@ class PointAxial
     end
 
     def to_s
-        "#{@q} #{@r}"
-    end
-
-    def pretty
         "(%d,%d)" % [@q, @r]
     end
 end
@@ -75,10 +71,6 @@ class PointCube
     end
 
     def to_s
-        "#{@x} #{@y} #{@z}"
-    end
-
-    def pretty
         "(%d,%d,%d)" % [@x, @y, @z]
     end
 end

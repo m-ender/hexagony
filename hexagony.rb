@@ -57,16 +57,21 @@ class Hexagony
         loop do
             cmd, dbg = @grid.get coords
             @debug_tick = @debug_level > 1 || (@debug_level > 0 && dbg)
-            puts "\nTick #{@tick}:" if @debug_tick
-            p @ips[@active_ip] if @debug_tick
-            p cmd if @debug_tick
+            if @debug_tick
+                puts "\nTick #{@tick}:"
+                puts "IPs (! indicates active IP):" 
+                @ips.each_with_index{|ip,i|
+                    puts "#{i == @active_ip ? '!' : ' '} #{i}: #{ip[0]}, #{ip[1]}"
+                }
+                puts "Command: #{cmd.inspect}"
+            end
             if cmd[0] == :terminate
-                p @memory if @debug_tick
+                puts "Memory: #{@memory.inspect}" if @debug_tick
                 break
             end
             process cmd
-            p dir if @debug_tick
-            p @memory if @debug_tick
+            puts "New direction: #{dir}" if @debug_tick
+            puts "Memory: #{@memory.inspect}" if @debug_tick
             @ips[@active_ip][0] += dir.vec
             handle_edges
             @active_ip = @new_ip
@@ -257,8 +262,6 @@ class Hexagony
 
             @ips[@active_ip][0].q = x
             @ips[@active_ip][0].r = z
-
-            p @ips[@active_ip] if @debug_tick
         end
     end
 
