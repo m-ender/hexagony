@@ -9,12 +9,15 @@ class Hexagony
 
     class ProgramError < Exception; end
 
-    def self.run(src, debug_level=0)
-        new(src, debug_level).run
+    def self.run(src, debug_level=0, in_str=$stdin, out_str=$stdout, max_ticks=-1)
+        new(src, debug_level, in_str, out_str, max_ticks).run
     end
 
-    def initialize(src, debug_level=false)
+    def initialize(src, debug_level=false, in_str=$stdin, out_str=$stdout, max_ticks=-1)
         @debug_level = debug_level
+        @in_str = in_str
+        @out_str = out_str
+        @max_ticks = max_ticks
         @debug_tick = false
         @grid = Grid.from_string(src)
         size = @grid.size
@@ -76,7 +79,10 @@ class Hexagony
             handle_edges
             @active_ip = @new_ip
             @tick += 1
+            break if @max_ticks > -1 && @tick >= @max_ticks
         end
+
+        @max_ticks > -1 && @tick >= @max_ticks
     end
 
     private
@@ -147,7 +153,7 @@ class Hexagony
             byte = read_byte
             @memory.set(byte ? byte.ord : -1)
         when :output_char
-            $> << @memory.get.chr
+            @out_str.print (@memory.get % 256).chr
         when :input_int
             val = 0
             sign = 1
@@ -178,7 +184,7 @@ class Hexagony
 
             @memory.set(sign*val)
         when :output_int
-            $> << @memory.get
+            @out_str.print @memory.get
 
         # Control flow
         when :jump
@@ -271,27 +277,8 @@ class Hexagony
             result = @next_byte
             @next_byte = nil
         else
-            result = STDIN.read(1)
+            result = @in_str.read(1)
         end
         result
     end
 end
-
-case ARGV[0]
-when "-d"
-    debug_level = 1
-when "-D"
-    debug_level = 2
-when "-g"
-    size = ARGV[1].to_i
-    puts Grid.new(size)
-    exit
-else
-    debug_level = 0
-end
-
-if debug_level > 0
-    ARGV.shift
-end
-
-Hexagony.run(ARGF.read, debug_level)
