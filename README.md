@@ -152,9 +152,9 @@ The following is a complete reference of all commands available in Hexagony.
 
 ### I/O
 
-- `,` reads a single character from STDIN and sets the current memory edge to its byte value. Returns `-1` once EOF is reached.
+- `,` reads a single byte from STDIN and sets the current memory edge to its value. Returns `-1` once EOF is reached.
 - `?` reads and discards from STDIN until a digit, a `-` or a `+` is found. Then reads as many characters as possible to form a valid (signed) decimal integer and sets the current memory edge to its value. Returns `0` once EOF is reached.
-- `;` interprets the current memory edge as a character code and writes the corresponding character to STDOUT.
+- `;` writes the current memory edge's value (modulo 256) to STDOUT as a byte.
 - `!` writes the decimal representation of the current memory edge to STDOUT.
 
 ### Control flow
