@@ -126,7 +126,7 @@ Picture an infinite hexagonal grid (which is separate from the source code). Eac
 
 The memory pointer (MP) points at one of the edges and has an orientation along that edge. At any time, there are three relevant edges: the one pointed at (the *current* memory edge), and its left and right neighbours (i.e. the edges connected to the vertex the MP's orientation points to).
 
-It is be possible to manipulate the current edge in several ways. The unary operators operate on the current edge only. The binary operators take the left and right neighbours as operands and store their result in the current edge. It is also possible to copy either the left or the right neighbour depending on the value of the current edge (essentially a ternary operator). The MP can reverse its direction or move to the left or right neighbour (without reversing its direction). There is also a conditional move, which chooses the neighbour to move to based on the value of the current edge.
+It is possible to manipulate the current edge in several ways. The unary operators operate on the current edge only. The binary operators take the left and right neighbours as operands and store their result in the current edge. It is also possible to copy either the left or the right neighbour depending on the value of the current edge (essentially a ternary operator). The MP can reverse its direction or move to the left or right neighbour (without reversing its direction). There is also a conditional move, which chooses the neighbour to move to based on the value of the current edge.
 
 ## Command list
 
