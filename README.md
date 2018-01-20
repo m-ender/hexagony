@@ -28,11 +28,11 @@ where each `.` could be a command (incidentally, `.` is a no-op in Hexagony). Th
       . . . . .
        . . . .
 
-Because of this restriction, the number of commands in the source code will always be a [centred hexagonal number](https://oeis.org/A003215). For reference, the first 10 centred hexagonal numbers are:
+Because of this restriction, the number of commands in the source code will always be a [centered hexagonal number](https://oeis.org/A003215). For reference, the first 10 centered hexagonal numbers are:
 
     1, 7, 19, 37, 61, 91, 127, 169, 217, 271
     
-When reading a source file, Hexagony first strips all whitespace characters. Then each `` ` `` (backtick) are removed as well, but the characters after those backticks are marked with a "debug flag". Then the remaining source code is padded to the next centred hexagonal number with no-ops and rearranged it into a regular hexagon. This means that the spaces in the examples above were only inserted for cosmetic reasons but don't have to be included in the source code. The following three programs are identical:
+When reading a source file, Hexagony first strips all whitespace characters. Then each `` ` `` (backtick) are removed as well, but the characters after those backticks are marked with a "debug flag". Then the remaining source code is padded to the next centered hexagonal number with no-ops and rearranged it into a regular hexagon. This means that the spaces in the examples above were only inserted for cosmetic reasons but don't have to be included in the source code. The following three programs are identical:
 
   
       a b c
@@ -126,7 +126,7 @@ Picture an infinite hexagonal grid (which is separate from the source code). Eac
 
 The memory pointer (MP) points at one of the edges and has an orientation along that edge. At any time, there are three relevant edges: the one pointed at (the *current* memory edge), and its left and right neighbours (i.e. the edges connected to the vertex the MP's orientation points to).
 
-It is be possible to manipulate the current edge in several ways. The unary operators operate on the current edge only. The binary operators take the left and right neighbours as operands and store their result in the current edge. It is also possible to copy either the left or the right neighbour depending on the value of the current edge (essentially a ternary operator). The MP can reverse its direction or move to the left or right neighbour (without reversing its direction). There is also a conditional move, which chooses the neighbour to move to based on the value of the current edge.
+It is possible to manipulate the current edge in several ways. The unary operators operate on the current edge only. The binary operators take the left and right neighbours as operands and store their result in the current edge. It is also possible to copy either the left or the right neighbour depending on the value of the current edge (essentially a ternary operator). The MP can reverse its direction or move to the left or right neighbour (without reversing its direction). There is also a conditional move, which chooses the neighbour to move to based on the value of the current edge.
 
 ## Command list
 
