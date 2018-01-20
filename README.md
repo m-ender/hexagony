@@ -28,11 +28,11 @@ where each `.` could be a command (incidentally, `.` is a no-op in Hexagony). Th
       . . . . .
        . . . .
 
-Because of this restriction, the number of commands in the source code will always be a [centred hexagonal number](https://oeis.org/A003215). For reference, the first 10 centred hexagonal numbers are:
+Because of this restriction, the number of commands in the source code will always be a [centered hexagonal number](https://oeis.org/A003215). For reference, the first 10 centered hexagonal numbers are:
 
     1, 7, 19, 37, 61, 91, 127, 169, 217, 271
     
-When reading a source file, Hexagony first strips all whitespace characters. Then each `` ` `` (backtick) are removed as well, but the characters after those backticks are marked with a "debug flag". Then the remaining source code is padded to the next centred hexagonal number with no-ops and rearranged it into a regular hexagon. This means that the spaces in the examples above were only inserted for cosmetic reasons but don't have to be included in the source code. The following three programs are identical:
+When reading a source file, Hexagony first strips all whitespace characters. Then each `` ` `` (backtick) are removed as well, but the characters after those backticks are marked with a "debug flag". Then the remaining source code is padded to the next centered hexagonal number with no-ops and rearranged it into a regular hexagon. This means that the spaces in the examples above were only inserted for cosmetic reasons but don't have to be included in the source code. The following three programs are identical:
 
   
       a b c
