@@ -1,6 +1,6 @@
 # Hexagony
 
-Hexagony is (to the best of the author's knowledge) the first two-dimensional [esoteric programming language](https://esolangs.org/wiki/Main_Page) on a hexagonal grid. Furthermore, the memory layout *also* resembles a (separate) hexagonal grid. The name is a portmanteau of "hexagon" and "agony", because I expect programming in it to be quite painful.
+Hexagony is (to the best of the author's knowledge) the first two-dimensional [esoteric programming language](https://esolangs.org/wiki/Main_Page) on a hexagonal grid. Furthermore, the memory layout *also* resembles a (separate) hexagonal grid. The name is a portmanteau of "hexagon" and "agony", because… well, give programming in it a go.
 
 Hexagony is Turing-complete as any Brainfuck program can be translated to Hexagony with some effort.
 
@@ -153,7 +153,7 @@ The following is a complete reference of all commands available in Hexagony.
 ### I/O
 
 - `,` reads a single byte from STDIN and sets the current memory edge to its value. Returns `-1` once EOF is reached.
-- `?` reads and discards from STDIN until a digit, a `-` or a `+` is found. Then reads as many characters as possible to form a valid (signed) decimal integer and sets the current memory edge to its value. Returns `0` once EOF is reached.
+- `?` reads and discards from STDIN until a digit, a `-` or a `+` is found. Then reads as many bytes as possible to form a valid (signed) decimal integer and sets the current memory edge to its value. The next byte after the number is not consumed by this command and can be read with `,`. Returns `0` if EOF is reached without finding a valid number.
 - `;` writes the current memory edge's value (modulo 256) to STDOUT as a byte.
 - `!` writes the decimal representation of the current memory edge to STDOUT.
 
