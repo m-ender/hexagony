@@ -125,7 +125,7 @@ class Grid
 
     def to_s
         @grid.map{|line|
-            ' '*(2*@size-1 - line.size) + line.map{|c,d| (d ? '`' : ' ') + (OPERATORS.invert[c]||c[1].chr)}*''
+            ' '*(2*@size-1 - line.size) + line.map{|c,d| (d ? '`' : ' ') + (OPERATORS.invert[c]||c[1].chr(Encoding::UTF_8))}*''
         }*$/
     end
 end
