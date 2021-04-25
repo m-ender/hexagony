@@ -2,7 +2,20 @@
 
 Hexagony is (to the best of the author's knowledge) the first two-dimensional [esoteric programming language](https://esolangs.org/wiki/Main_Page) on a hexagonal grid. Furthermore, the memory layout *also* resembles a (separate) hexagonal grid. The name is a portmanteau of "hexagon" and "agony", because… well, give programming in it a go.
 
-Hexagony is Turing-complete as any Brainfuck program can be translated to Hexagony with some effort.
+Hexagony is Turing-complete.
+
+## Using Hexagony
+
+There are a number of Hexagony implementations and a few ways to run them:
+
+- The easiest way to your feet wet is SirBogman's fantastic online IDE [**hexagony.net**](https://hexagony.net/) (running its own JavaScript-based interpreter).
+- If you prefer an offline experience, Timwi's [**Esoteric IDE**](https://github.com/Timwi/EsotericIDE) also supports Hexagony (running its own C#-based interpreter).
+- If you're looking for a command-line interpreter, SirBogman has written a [**fast C#-based interpreter**](https://github.com/SirBogman/Hexagony). This interpreter also runs on [**code.golf**](https://code.golf/).
+- And finally, there's the original reference implementation in Ruby, which you can find in this very repo. Usage notes are at the bottom of this README. You can also use this interpreter online at [**Try it online!**](https://tio.run/##y0itSEzPz6v8/9/DOtU6wNDaQd863DrfWj/HGkgG6hdZ51inWBtZBxj8/w8A)
+
+An honourable mention goes to Timwi's [**HexagonyColorer**](https://github.com/Timwi/HexagonyColorer). While this doesn't let you *run* Hexagony code, it's a nifty tool for annotating code paths in Hexagony programs:
+
+![Hexagony program with colour-coded code paths](https://camo.githubusercontent.com/57585cc1fdc2368caad878cbfa13862b3240a93f250831308a7dcc16f66e7b1e/687474703a2f2f692e737461636b2e696d6775722e636f6d2f65625931412e706e67)
 
 ## Overview
 
